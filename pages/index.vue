@@ -1,7 +1,7 @@
 <template>
-　 <v-form>
+<!-- 　 <v-form>
     <v-container>
-      <v-row>  
+      <v-row>
         <v-col cols="12" sm="6" md="3">
           <v-text-field
             label="Regular"
@@ -9,7 +9,9 @@
         </v-col>
       </v-row>
     </v-container>
-  </v-form>
+  </v-form> -->
+
+  <div>app</div>
 
 </template>
 
