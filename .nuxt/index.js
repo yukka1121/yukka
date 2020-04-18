@@ -11,6 +11,8 @@ import { setContext, getLocation, getRouteData, normalizeError } from './utils'
 
 /* Plugins */
 
+import nuxt_plugin_plugin_f9821be4 from 'nuxt_plugin_plugin_f9821be4' // Source: ./vuetify/plugin.js (mode: 'all')
+
 // Component: <ClientOnly>
 Vue.component(ClientOnly.name, ClientOnly)
 
@@ -48,7 +50,7 @@ async function createApp (ssrContext) {
   // here we inject the router and store to all child components,
   // making them available everywhere as `this.$router` and `this.$store`.
   const app = {
-    head: {"title":"my","meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"hid":"description","name":"description","content":"My super-duper Nuxt.js project"}],"link":[{"rel":"icon","type":"image\u002Fx-icon","href":"\u002Ffavicon.ico"}],"style":[],"script":[]},
+    head: {"title":"my","meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"hid":"description","name":"description","content":"My super-duper Nuxt.js project"}],"link":[{"rel":"icon","type":"image\u002Fx-icon","href":"\u002Ffavicon.ico"},{"rel":"stylesheet","type":"text\u002Fcss","href":"https:\u002F\u002Ffonts.googleapis.com\u002Fcss?family=Roboto:100,300,400,500,700,900&display=swap"},{"rel":"stylesheet","type":"text\u002Fcss","href":"https:\u002F\u002Fcdn.jsdelivr.net\u002Fnpm\u002F@mdi\u002Ffont@latest\u002Fcss\u002Fmaterialdesignicons.min.css"}],"style":[],"script":[]},
 
     router,
     nuxt: {
@@ -116,7 +118,41 @@ async function createApp (ssrContext) {
     ssrContext
   })
 
+  const inject = function (key, value) {
+    if (!key) {
+      throw new Error('inject(key, value) has no key provided')
+    }
+    if (value === undefined) {
+      throw new Error(`inject('${key}', value) has no value provided`)
+    }
+
+    key = '$' + key
+    // Add into app
+    app[key] = value
+
+    // Check if plugin not already installed
+    const installKey = '__nuxt_' + key + '_installed__'
+    if (Vue[installKey]) {
+      return
+    }
+    Vue[installKey] = true
+    // Call Vue.use() to install the plugin into vm
+    Vue.use(() => {
+      if (!Object.prototype.hasOwnProperty.call(Vue, key)) {
+        Object.defineProperty(Vue.prototype, key, {
+          get () {
+            return this.$root.$options[key]
+          }
+        })
+      }
+    })
+  }
+
   // Plugin execution
+
+  if (typeof nuxt_plugin_plugin_f9821be4 === 'function') {
+    await nuxt_plugin_plugin_f9821be4(app.context, inject)
+  }
 
   // If server-side, wait for async component to be resolved first
   if (process.server && ssrContext && ssrContext.url) {
