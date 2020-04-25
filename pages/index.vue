@@ -1,31 +1,43 @@
 <template>
-
- <v-form>
-    <v-container>
-      <v-row>
-        <v-col cols="12" sm="6" md="3">
-          <v-text-field
-            label="Regular"
-          ></v-text-field>
-        </v-col>
-      </v-row>
-
-      <div class="my-2">
-        <v-btn x-large color="success" dark>Extra large Button</v-btn>
+  <v-app>
+　 <v-container >
+    <v-card
+     class="mx-auto"
+     max-width="344"
+  >
+    　<v-card-text>
+      <div>問題</div>
+      <p class="display-1 text--primary">
+        be•nev•o•lent
+      </p>
+      <p>adjective</p>
+      <div class="text--primary">
+        well meaning and kindly.<br>
+        "a benevolent smile"
       </div>
-    </v-container>
-  </v-form>
-
+    　</v-card-text>
+    　<v-card-actions>  
+        <v-row align="center">
+         <v-col class="text-center" cols="12" v-for="n in 4" :key="n">
+          <div class="my-2">
+            <v-btn depressed large>Normal</v-btn>
+          </div>
+         </v-col>
+        </v-row>  
+    　</v-card-actions>
+  　</v-card>
+  </v-container> 
+  </v-app>
 </template>
 
 <script>
-
 </script>
 
 <style>
 .container {
   margin: 0 auto;
-  min-height: 100vh;
+  width: 100px;
+  min-height: 150vh;
   display: flex;
   justify-content: center;
   align-items: center;
