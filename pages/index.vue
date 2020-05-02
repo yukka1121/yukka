@@ -3,7 +3,7 @@
     <v-form>
       <v-container>
         <h1>問題１</h1>
-        <p>苦労せず大きな利益を得る事</p>
+        <p>{{questionlist[questionNumber]}}</p>
         <v-row>
           <v-col cols="12" sm="6">
             <v-text-field v-model="answerTxt" label="回答" :change="answerChanged()" required></v-text-field>
@@ -18,7 +18,7 @@
           <b-button @click="check('check')">回答へ</b-button>
         </v-row>
         <v-row>
-          <v-btn :disabled="isPush" class="ma-2" tile color="indigo" dark @click="pushBtn()">ボタン</v-btn>
+          <v-btn :disabled="isPush" class="ma-2" tile color="indigo" dark @click="pushBtn()">回答する</v-btn>
         </v-row>
       </v-container>
     </v-form>
@@ -30,6 +30,8 @@ export default {
   name: "Form",
   data() {
     return {
+      questionNumber: 0,
+      questionlist: ["1+2=?", "日本の首都は", "令和の前の元号は"],
       answerTxt: "",
       isPush: false
     };
@@ -38,6 +40,7 @@ export default {
     pushBtn: function() {
       this.isPush = true;
       console.log(this.isPush);
+      this.questionNumber++;
     },
     check: function(txt) {},
     answerChanged: function() {
