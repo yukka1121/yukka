@@ -3,7 +3,7 @@
     <v-form>
       <v-container>
         <p>問題</p>
-        <p>{{questionlist[questionNumber]}}</p>
+        <p>{{ questionlist[questionNumber] }}</p>
         <v-row>
           <v-col cols="12" sm="6">
             <v-text-field
@@ -28,8 +28,8 @@
         <v-card>
           <v-card-title class="headline grey lighten-2" primary-title></v-card-title>
           <v-card-text>
-            <p>{{answerlist[questionNumber]==answerTxt?"正解":"不正解"}}</p>
-            <p>{{answerTxt}}</p>
+            <p>{{ answerlist[questionNumber] == answerTxt ? '正解' : '不正解' }}</p>
+            <p>{{ answerTxt }}</p>
           </v-card-text>
           <v-card-actions>
             <v-btn color="primary" text @click="dialog(next)">次へ</v-btn>
@@ -41,6 +41,8 @@
   </v-app>
 </template>
 <script>
+import firebase from "~/plugins/firebase";
+
 export default {
   name: "Form",
   data() {
@@ -96,7 +98,21 @@ export default {
       isPush: false
     };
   },
+  created: function() {
+    this.init();
+  },
   methods: {
+    init: function() {
+      const db = firebase.firestore();
+      const dbUser = db.collection("japanese");
+
+      console.log("call");
+      dbUser.get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          console.log(doc.id, " => ", doc.data());
+        });
+      });
+    },
     pushBtn: function() {
       this.isPush = true;
       console.log(this.isPush);
@@ -104,14 +120,6 @@ export default {
     },
 
     check: function(txt) {},
-    dialog: function(next) {
-      console.log(this.dialog);
-      this.questionNumber++;
-    },
-    dialog: function(back) {
-      console.log(this.dialog);
-      this.questionNumber--;
-    },
     answerChanged: function() {
       console.log(this.answerTxt);
       if (this.answerTxt) {
@@ -122,4 +130,4 @@ export default {
     }
   }
 };
-</script>j
+</script>
